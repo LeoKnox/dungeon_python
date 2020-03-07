@@ -1,6 +1,8 @@
 body {
     background-color: #5f6062;
     color: #c6ca53;
+    margin: 0px;
+    padding: 0px;
 }
 
 .colors {
@@ -9,6 +11,10 @@ body {
     border-color: #c6ca53;
     caret-color: #c9dcb3;
     flood-color: #7b7263;
+}
+
+#content {
+    padding: 10px;
 }
 
 ul {
@@ -39,4 +45,8 @@ li a:hover:not(.active) {
 .active {
     background-color: #c6ca53;
     color: white;
+}
+
+footer {
+    padding: 10px;
 }
