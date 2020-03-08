@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div id="content">
+        <h2>Dungeon Page</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Length</th>
+                <th>Width</th>
+                <th>Material</th>
+            </tr>
+            </thead>
+            {% for data in dungeonData %}
+            <tr>
+                <td>{{ data["name"] }}</td>
+                <td>{{ data["length"] }}</td>
+                <td>{{ data["width"] }}</td>
+                <td>{{ data["material"] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
