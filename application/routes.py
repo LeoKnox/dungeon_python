@@ -23,8 +23,8 @@ def create():
 def login():
     return render_template("login.html", login=True)
 
-@app.route("/make")
+@app.route("/make", methods=["GET", "POST"])
 def make():
-    id = request.args.get('dungeonID')
-    name = request.args.get('name')
+    id = request.form.get('dungeonID')
+    name = request.form.get('name')
     return render_template("make.html",data={"id":id, "name":name})

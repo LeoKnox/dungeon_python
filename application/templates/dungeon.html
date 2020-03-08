@@ -21,7 +21,7 @@
                 <td>{{ data["width"] }}</td>
                 <td>{{ data["material"] }}</td>
                 <td>
-                <form action="{{ url_for('make') }}" method="GET">
+                <form action="{{ url_for('make') }}" method="POST">
                     <input type="hidden" name="dungeonID" value="{{ data['dungeonID'] }}">
                     <input type="hidden" name="name" value="{{ data['name'] }}">
                     <button>Make</button>
