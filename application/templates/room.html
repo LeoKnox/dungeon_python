@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div id="content">
+        <h2>Room Page</h2>
+        {% for dungeon in dungeons %}
+        <dl>
+            <dt>Room Id: {{ dungeon.dungeonID }}</dt>
+            <dt>Room Name: {{ dungeon.name }}</dt>
+            <dt>Room Length: {{ dungeon.length }}</dt>
+            <dt>Room Width: {{ dungeon.width }}</dt>
+        </dl>
+        {% else %}
+        <h3>This dungeon has no rooms.</h3>
+        {% endfor %}
+    </div>
+{% endblock %}

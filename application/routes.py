@@ -1,4 +1,4 @@
-from application import app
+from application import app, db
 from flask import render_template, request, json, Response
 
 dungeonData = [{"dungeonID":"1111","name":"Entry","length":"4","width":"4","material":"stone"},
@@ -38,3 +38,17 @@ def api(idx=None):
         jdata = dungeonData[int(idx)]
     
     return Response(json.dumps(jdata), mimetype="application/json")
+
+class Dungeon(db.Document):
+    dungeonID       =   db.IntField( unique=True )
+    name            =   db.StringField( max_length=50 )
+    length          =   db.IntField()
+    width           =   db.IntField()
+    material        =   db.StringField( max_length=50 )
+
+@app.route("/room")
+def room():
+    Dungeon(dungeonID=1, name="Boss Room", length=9, width=9).save()
+    Dungeon(dungeonID=2, name="King Room", length=7, width=7).save()
+    dungeons = Dungeon.objects.all()
+    return render_template("room.html", dungeons=dungeons)
