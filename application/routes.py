@@ -1,5 +1,9 @@
 from application import app
-from flask import render_template, request
+from flask import render_template, request, json, Response
+
+dungeonData = [{"dungeonID":"1111","name":"Entry","length":"4","width":"4","material":"stone"},
+{"dungeonID":"1112","name":"Storage","length":"6","width":"5","material":"wood"},
+{"dungeonID":"1113","name":"Tome","length":"5","width":"8","material":"stone"}]
 
 @app.route("/")
 @app.route("/index")
@@ -9,10 +13,6 @@ def index():
 @app.route("/dungeon")
 @app.route("/dungeon/<dungeonName>")
 def dungeon(dungeonName="Generic"):
-    dungeonData = [{"dungeonID":"1111","name":"Entry","length":"4","width":"4","material":"stone"},
-    {"dungeonID":"1112","name":"Storage","length":"6","width":"5","material":"wood"},
-    {"dungeonID":"1113","name":"Tome","length":"5","width":"8","material":"stone"}]
-    print(dungeonData)
     return render_template("dungeon.html", dungeonData=dungeonData, dungeon=True, dungeonName = dungeonName)
 
 @app.route("/create")
@@ -28,3 +28,13 @@ def make():
     id = request.form.get('dungeonID')
     name = request.form.get('name')
     return render_template("make.html",data={"id":id, "name":name})
+
+@app.route("/api/")
+@app.route("/api/<idx>")
+def api(idx=None):
+    if(idx == None):
+        jdata = dungeonData
+    else:
+        jdata = dungeonData[int(idx)]
+    
+    return Response(json.dumps(jdata), mimetype="application/json")
