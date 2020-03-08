@@ -1,5 +1,5 @@
 from application import app
-from flask import render_template
+from flask import render_template, request
 
 @app.route("/")
 @app.route("/index")
@@ -22,3 +22,9 @@ def create():
 @app.route("/login")
 def login():
     return render_template("login.html", login=True)
+
+@app.route("/make")
+def make():
+    id = request.args.get('dungeonID')
+    name = request.args.get('name')
+    return render_template("make.html",data={"id":id, "name":name})

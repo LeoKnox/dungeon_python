@@ -11,6 +11,7 @@
                 <th>Length</th>
                 <th>Width</th>
                 <th>Material</th>
+                <th>Make</th>
             </tr>
             </thead>
             {% for data in dungeonData %}
@@ -19,6 +20,13 @@
                 <td>{{ data["length"] }}</td>
                 <td>{{ data["width"] }}</td>
                 <td>{{ data["material"] }}</td>
+                <td>
+                <form action="{{ url_for('make') }}" method="GET">
+                    <input type="hidden" name="dungeonID" value="{{ data['dungeonID'] }}">
+                    <input type="hidden" name="name" value="{{ data['name'] }}">
+                    <button>Make</button>
+                </form>
+                </td>
             </tr>
             {% endfor %}
         </table>
