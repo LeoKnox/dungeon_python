@@ -50,3 +50,17 @@ li a:hover:not(.active) {
 footer {
     padding: 10px;
 }
+
+th {
+    background-color: #555358;
+}
+
+th, td {
+    border: 2px #555358 solid;
+    padding: 5px 8px;
+    font-size: 1.2em;
+}
+
+table {
+    border-collapse: collapse;
+}
