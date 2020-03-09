@@ -1,5 +1,5 @@
 from application import app, db
-from flask import render_template, request, json, Response
+from flask import render_template, request, json, Response, redirect, flash
 from application.models import dungeon, monster, populate
 from application.forms import LoginForm, PopulateForm
 
@@ -24,6 +24,13 @@ def create():
 @app.route("/login", methods=['GET','POST'])
 def login():
     form = LoginForm()
+    if form.validate_on_submit():
+        print(request.form.get("monster_id"))
+        if request.form.get("monster_id") == "1":
+            flash("You are monstered.", "good")
+            return redirect("/index")
+        else:
+            flash("Sorry, epic fail", "bad")
     return render_template("login.html", form=form, title="Login", login=True)
 
 @app.route("/make", methods=["GET", "POST"])
