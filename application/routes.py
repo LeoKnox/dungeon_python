@@ -25,9 +25,13 @@ def create():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        print(request.form.get("monster_id"))
-        if request.form.get("monster_id") == "1":
-            flash("You are monstered.", "good")
+        monster_id = form.monster_id.data
+        called = form.called.data
+
+        monsterone = monster.objects(monster_id=monster_id).first()
+        print(called)
+        if monsterone and monsterone.get_called == str(monsterone.monster_id):
+            flash(f"{monsterone.called}! You are monstered.", "good")
             return redirect("/index")
         else:
             flash("Sorry, epic fail", "bad")
