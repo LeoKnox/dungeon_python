@@ -3,15 +3,21 @@
 {% block content %}
     <div id="content">
         <h2>{{ title }}</h2>
-        <form name="login" action="" method="post">
+        <form name="login" action="" method="post" novalidate>
             {{ form.hidden_tag() }}
             <p>
                 {{ form.monster_id.label }}<br>
                 {{ form.monster_id(size=25) }}
+                {% for error in form.monster_id.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
             </p>
             <p>
                 {{ form.called.label }}<br>
                 {{ form.called(size=25) }}
+                {% for error in form.called.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
             </p>
             <p>
                 {{ form.submit() }}

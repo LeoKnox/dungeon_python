@@ -1,5 +1,6 @@
 import flask
 from application import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class dungeon(db.Document):
     dungeonID       =   db.IntField( unique=True )
@@ -10,9 +11,15 @@ class dungeon(db.Document):
 
 class monster(db.Document):
     monster_id      =   db.IntField( unique=True )
-    called          =   db.StringField( max_length=50 )
+    called          =   db.StringField()
     monster_type    =   db.StringField( max_length=50 )
     damage          =   db.IntField()
+
+    def set_called(self, called):
+        self.called = generate_password_hash(called)
+
+    def get_called(self, called):
+        return check_password_hash(self.called, called)
 
 class populate(db.Document):
     dungeonID       =   db.IntField()
