@@ -1,6 +1,7 @@
 from application import app, db
 from flask import render_template, request, json, Response
 from application.models import dungeon, monster, populate
+from application.forms import LoginForm, PopulateForm
 
 dungeonData = [{"dungeonID":"1111","name":"Entry","length":"4","width":"4","material":"stone"},
 {"dungeonID":"1112","name":"Storage","length":"6","width":"5","material":"wood"},
@@ -20,9 +21,10 @@ def dungeon(dungeonName="Generic"):
 def create():
     return render_template("create.html", create=True)
 
-@app.route("/login")
+@app.route("/login", methods=['GET','POST'])
 def login():
-    return render_template("login.html", login=True)
+    form = LoginForm()
+    return render_template("login.html", form=form, title="Login", login=True)
 
 @app.route("/make", methods=["GET", "POST"])
 def make():

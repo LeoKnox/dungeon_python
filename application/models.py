@@ -9,10 +9,10 @@ class dungeon(db.Document):
     material        =   db.StringField( max_length=50 )
 
 class monster(db.Document):
-    monster_id      =   db.IntFiled( unique=True )
+    monster_id      =   db.IntField( unique=True )
     called          =   db.StringField( max_length=50 )
     monster_type    =   db.StringField( max_length=50 )
-    damage          =   db.Intfield()
+    damage          =   db.IntField()
 
 class populate(db.Document):
     dungeonID       =   db.IntField()
