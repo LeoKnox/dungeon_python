@@ -17,10 +17,6 @@ def index():
 def dungeon(dungeonName="Generic"):
     return render_template("dungeon.html", dungeonData=dungeonData, dungeon=True, dungeonName = dungeonName)
 
-@app.route("/create")
-def create():
-    return render_template("create.html", create=True)
-
 @app.route("/login", methods=['GET','POST'])
 def login():
     form = LoginForm()
@@ -30,12 +26,30 @@ def login():
 
         monsterone = monster.objects(monster_id=monster_id).first()
         print(called)
-        if monsterone and monsterone.get_called == str(monsterone.monster_id):
+        if monsterone and monsterone.get_called(called) == monsterone.monster_id:
             flash(f"{monsterone.called}! You are monstered.", "good")
             return redirect("/index")
         else:
             flash("Sorry, epic fail", "bad")
     return render_template("login.html", form=form, title="Login", login=True)
+
+@app.route("/create", methods=["POST", "GET"])
+def create():
+    form = PopulateForm()
+    if form.validate_on_submit():
+        monster_id  =   monster.objects.count()
+        monster_id  += 1
+
+        called      =   form.called.data
+        monster_type =  form.monster_type.data
+        damage      =   form.damage.data
+
+        monsterone = monster(monster_id = monster_id, called = called, monster_type = monster_type, damage = damage)
+        monsterone.set_called(called)
+        monsterone.save()
+        flash('monster made')
+        return redirect("index")
+    return render_template("create.html", form=form, title="Create", create=True)
 
 @app.route("/make", methods=["GET", "POST"])
 def make():

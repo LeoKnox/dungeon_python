@@ -12,7 +12,7 @@ class LoginForm(FlaskForm):
 class PopulateForm(FlaskForm):
     monster_id  =   IntegerField("Monster Id", validators=[DataRequired()])
     called      =   StringField("Called", validators=[DataRequired(), Length(min=3)])
-    called_confim =   StringField("Called", EqualTo('called'), Length(min=3), validators=[DataRequired()])
+    #called_confim =   StringField("Called", EqualTo('called'), Length(min=3), validators=[DataRequired()])
     monster_type =   StringField("Type", validators=[DataRequired()])
     damage      =   IntegerField("Damage", validators=[DataRequired()])
     submit      =   SubmitField("Login")

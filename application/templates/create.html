@@ -3,5 +3,39 @@
 {% block content %}
     <div id="content">
         <h2>Create Page</h2>
+        <form name="create" action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.monster_id.label }}<br>
+                {{ form.monster_id(size=25) }}
+                {% for error in form.monster_id.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.called.label }}<br>
+                {{ form.called(size=25) }}
+                {% for error in form.called.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.monster_type.label }}<br>
+                {{ form.monster_type(size=25) }}
+                {% for error in form.monster_type.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.damage.label }}<br>
+                {{ form.damage(size=25) }}
+                {% for error in form.damage.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.submit() }}
+            </p>
+        </form>
     </div>
 {% endblock %}
