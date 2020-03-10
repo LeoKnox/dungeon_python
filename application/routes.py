@@ -1,6 +1,6 @@
 from application import app, db
 from flask import render_template, request, json, Response, redirect, flash
-from application.models import dungeon, monster, populate
+from application.models import dungeonx, monster, populate
 from application.forms import LoginForm, PopulateForm
 
 dungeonData = [{"dungeonID":"1111","name":"Entry","length":"4","width":"4","material":"stone"},
@@ -15,7 +15,9 @@ def index():
 @app.route("/dungeon")
 @app.route("/dungeon/<dungeonName>")
 def dungeon(dungeonName="Generic"):
-    return render_template("dungeon.html", dungeonData=dungeonData, dungeon=True, dungeonName = dungeonName)
+    dungeons = dungeonx.objects.all()
+    print(dungeons)
+    return render_template("dungeon.html", dungeonData=dungeons, dungeon=True, dungeonName = dungeonName)
 
 @app.route("/login", methods=['GET','POST'])
 def login():
@@ -39,6 +41,7 @@ def create():
     if form.validate_on_submit():
         monster_id  =   monster.objects.count()
         monster_id  += 1
+        print(monster_id)
 
         called      =   form.called.data
         monster_type =  form.monster_type.data
@@ -71,5 +74,5 @@ def api(idx=None):
 def room():
     #Dungeon(dungeonID=1, name="Boss Room", length=9, width=9).save()
     #Dungeon(dungeonID=2, name="King Room", length=7, width=7).save()
-    dungeons = Dungeon.objects.all()
+    dungeons = dungeon.objects.all()
     return render_template("room.html", dungeons=dungeons)

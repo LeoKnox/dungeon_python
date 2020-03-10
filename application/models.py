@@ -2,7 +2,7 @@ import flask
 from application import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
-class dungeon(db.Document):
+class dungeonx(db.Document):
     dungeonID       =   db.IntField( unique=True )
     name            =   db.StringField( max_length=50 )
     length          =   db.IntField()
