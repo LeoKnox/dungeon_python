@@ -1,5 +1,5 @@
 from application import app, db
-from flask import render_template, request, json, Response, redirect, flash
+from flask import render_template, request, json, Response, redirect, flash, url_for
 from application.models import dungeonx, monster, populate
 from application.forms import LoginForm, PopulateForm
 
@@ -67,7 +67,7 @@ def make():
         else:
             populate(monster_id=monster_id,dungeonID=dungeonID)
             flash(f"made {dungeonName}", "good")
-    dungeons = list( monster.objects.aggregate()*[
+    dungeons = list( monster.objects.aggregate(*[
             {
                 '$lookup': {
                     'from': 'populate', 
@@ -102,8 +102,8 @@ def make():
                     'dungeonID': 1
                 }
             }
-        ])
-    return render_template("make.html", make=True, title="Maked", population = population)
+        ]))
+    return render_template("make.html", make=True, title="Maked", populate = dungeons)
 
 @app.route("/api/")
 @app.route("/api/<idx>")
