@@ -19,6 +19,12 @@ def dungeon(dungeonName="Generic"):
     print(dungeons)
     return render_template("dungeon.html", dungeonData=dungeons, dungeon=True, dungeonName = dungeonName)
 
+@app.route("/logout")
+def logout():
+    session["monster_id"]=False
+    session.pop('monstername', None) #can use either of these commands
+    return redirect(url_for('index'))
+
 @app.route("/login", methods=['GET','POST'])
 def login():
     if session.get('monstername'):
@@ -42,6 +48,8 @@ def login():
 
 @app.route("/create", methods=["POST", "GET"])
 def create():
+    if session.get('monstername'):
+        return redirect(url_for('index')) #alt can set to logout and return to login page
     form = PopulateForm()
     if form.validate_on_submit():
         monster_id  =   monster.objects.count()
@@ -61,9 +69,11 @@ def create():
 
 @app.route("/make", methods=["GET", "POST"])
 def make():
+    if not session.get('monstername'):
+        return redirect(url_for('index')) #alt can set to logout and return to login page
     dungeonID = request.form.get('dungeonID')
     dungeonName = request.form.get('name')
-    monster_id = 1
+    monster_id = session.get('monster_id')
 
     if dungeonID:
         if populate.objects(monster_id=monster_id,dungeonID=dungeonID):

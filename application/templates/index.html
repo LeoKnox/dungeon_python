@@ -2,6 +2,11 @@
 
 {% block content %}
     <div id="content">
+        {% if session['monstername'] %}
+            <h3>Ready {{ monstername }}</h3>
+        {% else %}
+            <p>logged in? <a href="{{url_for('login') }}">login</a></p>
+        {% endif %}
         <h2>Hello dungeon builder</h2>
     </div>
 {% endblock %}
