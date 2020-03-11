@@ -67,8 +67,43 @@ def make():
         else:
             populate(monster_id=monster_id,dungeonID=dungeonID)
             flash(f"made {dungeonName}", "good")
-    dungeons = None
-    return render_template("make.html", make=True, title="Maked", dungeons = dungeons)
+    dungeons = list( monster.objects.aggregate()*[
+            {
+                '$lookup': {
+                    'from': 'populate', 
+                    'localField': 'monster_id', 
+                    'foreignField': 'monster_id', 
+                    'as': 'r1'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$r1', 
+                    'includeArrayIndex': 'r1_id', 
+                    'preserveNullAndEmptyArrays': False
+                }
+            }, {
+                '$lookup': {
+                    'from': 'dungeonx', 
+                    'localField': 'r1.dungeonID', 
+                    'foreignField': 'dungeonID', 
+                    'as': 'r2'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$r2', 
+                    'preserveNullAndEmptyArrays': False
+                }
+            }, {
+                '$match': {
+                    'monster_id': monster_id
+                }
+            }, {
+                '$sort': {
+                    'dungeonID': 1
+                }
+            }
+        ])
+    return render_template("make.html", make=True, title="Maked", population = population)
 
 @app.route("/api/")
 @app.route("/api/<idx>")
