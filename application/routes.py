@@ -15,7 +15,7 @@ def index():
 @app.route("/dungeon")
 @app.route("/dungeon/<dungeonName>")
 def dungeon(dungeonName="Generic"):
-    dungeons = dungeonx.objects.all()
+    dungeons = dungeonx.objects.order_by("name")
     print(dungeons)
     return render_template("dungeon.html", dungeonData=dungeons, dungeon=True, dungeonName = dungeonName)
 
@@ -56,9 +56,19 @@ def create():
 
 @app.route("/make", methods=["GET", "POST"])
 def make():
-    id = request.form.get('dungeonID')
-    name = request.form.get('name')
-    return render_template("make.html",data={"id":id, "name":name})
+    dungeonID = request.form.get('dungeonID')
+    dungeonName = request.form.get('name')
+    monster_id = 1
+
+    if dungeonID:
+        if populate.objects(monster_id=monster_id,dungeonID=dungeonID):
+            flash(f"already made {dungeonName}", "bad")
+            return redirect(url_for("dungeon"))
+        else:
+            populate(monster_id=monster_id,dungeonID=dungeonID)
+            flash(f"made {dungeonName}", "good")
+    dungeons = None
+    return render_template("make.html", make=True, title="Maked", dungeons = dungeons)
 
 @app.route("/api/")
 @app.route("/api/<idx>")

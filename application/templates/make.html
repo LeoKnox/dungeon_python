@@ -3,7 +3,27 @@
 {% block content %}
     <div id="content">
         <h2>Welcome to Making</h2>
-        <p>Room ID: {{ data.id }}</p>
-        <p>Room Name: {{ data.name }}</p>
+        {% if not population %}
+        <h1>No population</h1>
+        {% else %}
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Length</th>
+                <th>Width</th>
+                <th>Material</th>
+            </tr>
+            </thead>
+            {% for data in population %}
+            <tr>
+                <td>{{ data["name"] }}</td>
+                <td>{{ data["length"] }}</td>
+                <td>{{ data["width"] }}</td>
+                <td>{{ data["material"] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
     </div>
 {% endblock %}
