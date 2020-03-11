@@ -9,18 +9,18 @@
         <table>
             <thead>
             <tr>
-                <th>Monster ID</th>
-                <th>Called</th>
-                <th>Type</th>
-                <th>Damage</th>
+                <th>Room Name</th>
+                <th>Length</th>
+                <th>Width</th>
+                <th>Material</th>
             </tr>
             </thead>
             {% for data in populate %}
             <tr>
-                <td>{{ data["monster_id"] }}</td>
-                <td>{{ data["called"] }}</td>
-                <td>{{ data["monster_type"] }}</td>
-                <td>{{ data["damage"] }}</td>
+                <td>{{ data.r2["name"] }}</td>
+                <td>{{ data.r2["length"] }}</td>
+                <td>{{ data.r2["width"] }}</td>
+                <td>{{ data.r2["material"] }}</td>
             </tr>
             {% endfor %}
         </table>

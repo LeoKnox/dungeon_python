@@ -65,7 +65,7 @@ def make():
             flash(f"already made {dungeonName}", "bad")
             return redirect(url_for("dungeon"))
         else:
-            populate(monster_id=monster_id,dungeonID=dungeonID)
+            populate(monster_id=monster_id,dungeonID=dungeonID).save()
             flash(f"made {dungeonName}", "good")
     dungeons = list( monster.objects.aggregate(*[
             {
