@@ -1,5 +1,5 @@
 from application import app, db
-from flask import render_template, request, json, Response, redirect, flash, url_for
+from flask import render_template, request, json, Response, redirect, flash, url_for, session
 from application.models import dungeonx, monster, populate
 from application.forms import LoginForm, PopulateForm
 
@@ -21,6 +21,9 @@ def dungeon(dungeonName="Generic"):
 
 @app.route("/login", methods=['GET','POST'])
 def login():
+    if session.get('monstername'):
+        return redirect(url_for('index')) #alt can set to logout and return to login page
+
     form = LoginForm()
     if form.validate_on_submit():
         monster_id = form.monster_id.data
@@ -30,6 +33,8 @@ def login():
         print(called)
         if monsterone and monsterone.get_called(called) == monsterone.monster_id:
             flash(f"{monsterone.called}! You are monstered.", "good")
+            session['monster_id'] = monsterone.monster_id
+            session['monstername'] = monsterone.called
             return redirect("/index")
         else:
             flash("Sorry, epic fail", "bad")
