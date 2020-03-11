@@ -3,8 +3,14 @@
     <ul>
         <li><a class="{% if index %}active{% endif %}" href="{{ url_for('index') }}">Home</a></li>
         <li><a class="{% if dungeon %}active{% endif %}" href="{{ url_for('dungeon') }}">Dungeon</a></li>
+        {% if not session['monstername'] %}
         <li><a class="{% if create %}active{% endif %}" href="{{ url_for('create') }}">Create</a></li>
+        {% endif %}
+        {% if not session['monstername'] %}
         <li><a class="{% if login %}active{% endif %}" href="{{ url_for('login') }}">Login</a></li>
+        {% else %}
+        <li><a class="{% if lougout %}active{% endif %}" href="{{ url_for('logout') }}">Logout</a></li>
+        {% endif %}
         <li><a class="{% if make %}active{% endif %}" href="{{ url_for('make') }}">Make</a></li>
     </ul>
 </div>

@@ -64,3 +64,11 @@ th, td {
 table {
     border-collapse: collapse;
 }
+
+.login_name {
+    float: right;
+    position: absolute;
+    font-size: 18px;
+    right: 10em;
+    top: 3em;
+}
