@@ -4,43 +4,13 @@ from application.models import dungeonx, monster, populate
 from application.forms import LoginForm, PopulateForm
 from flask_restplus import Resource
 from werkzeug.utils import cached_property
+from application.dungeon_list import dungeon_list
 
 dungeonData = [{"dungeonID":"1111","name":"Entry","length":"4","width":"4","material":"stone"},
 {"dungeonID":"1112","name":"Storage","length":"6","width":"5","material":"wood"},
 {"dungeonID":"1113","name":"Tome","length":"5","width":"8","material":"stone"}]
 
 ##########################################################
-
-    #get all
-@api.route('/api', '/api/')
-class GetAndPost(Resource):
-    def get(self):
-        return jsonify(monster.objects.all())
-
-    #post
-    def post(self):
-        data = api.payload
-        monsterone = monster(monster_id = data['monster_id'], called = data['called'], monster_type = data['monster_type'], damage = data['damage'])
-        monsterone.set_called(data['called'])
-        monsterone.save()
-        return jsonify(monster.objects(monster_id=data['monster_id']))
-
-    #get one
-@api.route('/api/<idx>')
-class GetUpdateDelete(Resource):
-    def get(self,idx):
-        return jsonify(monster.objects(monster_id=idx))
-
-    #put
-    def put(self,idx):
-        data = api.payload
-        monster.objects(monster_id=idx).update(**data)
-        return jsonify(monster.objects.(monster_id=idx))
-
-    #delete
-    def delete(self,idx):
-        monster.objects(monster_id=idx).delete()
-        return jsonify("user is deleted")
 
 #########################################################
 
@@ -119,42 +89,9 @@ def make():
         else:
             populate(monster_id=monster_id,dungeonID=dungeonID).save()
             flash(f"made {dungeonName}", "good")
-    dungeons = list( monster.objects.aggregate(*[
-            {
-                '$lookup': {
-                    'from': 'populate', 
-                    'localField': 'monster_id', 
-                    'foreignField': 'monster_id', 
-                    'as': 'r1'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$r1', 
-                    'includeArrayIndex': 'r1_id', 
-                    'preserveNullAndEmptyArrays': False
-                }
-            }, {
-                '$lookup': {
-                    'from': 'dungeonx', 
-                    'localField': 'r1.dungeonID', 
-                    'foreignField': 'dungeonID', 
-                    'as': 'r2'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$r2', 
-                    'preserveNullAndEmptyArrays': False
-                }
-            }, {
-                '$match': {
-                    'monster_id': monster_id
-                }
-            }, {
-                '$sort': {
-                    'dungeonID': 1
-                }
-            }
-        ]))
+
+    dungeons = dungeon_list()
+
     return render_template("make.html", make=True, title="Maked", populate = dungeons)
 
 @app.route("/zapi/")
