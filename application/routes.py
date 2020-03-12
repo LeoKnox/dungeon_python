@@ -31,6 +31,11 @@ class GetUpdateDelete(Resource):
     def get(self,idx):
         return jsonify(monster.objects(monster_id=idx))
 
+    #put
+    def put(self,idx):
+        data = api.payload
+        monster.objects(monster_id=idx).update(**data)
+        return jsonify(monster.objects.(monster_id=idx))
 
 #########################################################
 
