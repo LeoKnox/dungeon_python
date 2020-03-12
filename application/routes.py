@@ -11,11 +11,21 @@ dungeonData = [{"dungeonID":"1111","name":"Entry","length":"4","width":"4","mate
 
 ##########################################################
 
+    #get all
 @api.route('/api', '/api/')
 class GetAndPost(Resource):
     def get(self):
         return jsonify(monster.objects.all())
 
+    #post
+    def post(self):
+        data = api.payload
+        monsterone = monster(monster_id = data['monster_id'], called = data['called'], monster_type = data['monster_type'], damage = data['damage'])
+        monsterone.set_called(data['called'])
+        monsterone.save()
+        return jsonify(monster.objects(monster_id=data['monster_id']))
+
+    #get one
 @api.route('/api/<idx>')
 class GetUpdateDelete(Resource):
     def get(self,idx):
