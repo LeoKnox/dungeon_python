@@ -1,11 +1,28 @@
-from application import app, db
-from flask import render_template, request, json, Response, redirect, flash, url_for, session
+from application import app, db, api
+from flask import render_template, request, json, jsonify, Response, redirect, flash, url_for, session
 from application.models import dungeonx, monster, populate
 from application.forms import LoginForm, PopulateForm
+from flask_restplus import Resource
+from werkzeug.utils import cached_property
 
 dungeonData = [{"dungeonID":"1111","name":"Entry","length":"4","width":"4","material":"stone"},
 {"dungeonID":"1112","name":"Storage","length":"6","width":"5","material":"wood"},
 {"dungeonID":"1113","name":"Tome","length":"5","width":"8","material":"stone"}]
+
+##########################################################
+
+@api.route('/api', '/api/')
+class GetAndPost(Resource):
+    def get(self):
+        return jsonify(monster.objects.all())
+
+@api.route('/api/<idx>')
+class GetUpdateDelete(Resource):
+    def get(self,idx):
+        return jsonify(monster.objects(monster_id=idx))
+
+
+#########################################################
 
 @app.route("/")
 @app.route("/index")
@@ -36,8 +53,8 @@ def login():
         called = form.called.data
 
         monsterone = monster.objects(monster_id=monster_id).first()
-        print(called)
-        if monsterone and monsterone.get_called(called) == monsterone.monster_id:
+        print(monsterone.monster_id)
+        if monsterone and monsterone.get_called(called):
             flash(f"{monsterone.called}! You are monstered.", "good")
             session['monster_id'] = monsterone.monster_id
             session['monstername'] = monsterone.called
@@ -120,8 +137,8 @@ def make():
         ]))
     return render_template("make.html", make=True, title="Maked", populate = dungeons)
 
-@app.route("/api/")
-@app.route("/api/<idx>")
+@app.route("/zapi/")
+@app.route("/zapi/<idx>")
 def api(idx=None):
     if(idx == None):
         jdata = dungeonData
