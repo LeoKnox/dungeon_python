@@ -37,6 +37,11 @@ class GetUpdateDelete(Resource):
         monster.objects(monster_id=idx).update(**data)
         return jsonify(monster.objects.(monster_id=idx))
 
+    #delete
+    def delete(self,idx):
+        monster.objects(monster_id=idx).delete()
+        return jsonify("user is deleted")
+
 #########################################################
 
 @app.route("/")
